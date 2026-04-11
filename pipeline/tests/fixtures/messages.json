@@ -1,0 +1,102 @@
+[
+  {
+    "message_id": "msg_001",
+    "timestamp": "2024-01-15T10:00:00",
+    "sender": "Priya",
+    "group": "Wayne Desi Gals",
+    "text": "anyone know a good plumber near Karama? need contact number",
+    "media_type": "text",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_002",
+    "timestamp": "2024-01-15T10:05:00",
+    "sender": "Sunita",
+    "group": "Wayne Desi Gals",
+    "text": "anyone know AC guy",
+    "media_type": "text",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_003",
+    "timestamp": "2024-01-15T10:10:00",
+    "sender": "Reema",
+    "group": "Wayne Desi Gals",
+    "text": "Try Ahmed Plumbing, call him on 050 123 4567",
+    "media_type": "text",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_004",
+    "timestamp": "2024-01-15T10:15:00",
+    "sender": "Farah",
+    "group": "Wayne Desi Gals",
+    "text": "I know someone good, his number is +971559876543",
+    "media_type": "text",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_005",
+    "timestamp": "2024-01-15T10:20:00",
+    "sender": "Meena",
+    "group": "Wayne Desi Gals",
+    "text": "Good morning everyone 🌞",
+    "media_type": "text",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_006",
+    "timestamp": "2024-01-15T10:25:00",
+    "sender": "Admin",
+    "group": "Wayne Desi Gals",
+    "text": "Community meetup this Saturday at 6pm at the community centre, all welcome!",
+    "media_type": "text",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_007",
+    "timestamp": "2024-01-15T10:30:00",
+    "sender": "Deepa",
+    "group": "Wayne Desi Gals",
+    "text": null,
+    "media_type": "vcard",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_008",
+    "timestamp": "2024-01-15T10:35:00",
+    "sender": "Layla",
+    "group": "Wayne Desi Gals",
+    "text": null,
+    "media_type": "image",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_009",
+    "timestamp": "2024-01-15T14:00:00",
+    "sender": "Noor",
+    "group": "Wayne Desi Gals",
+    "text": "Try this number: 04-123 4567",
+    "media_type": "text",
+    "quoted_message_id": null,
+    "local_media_path": null
+  },
+  {
+    "message_id": "msg_010",
+    "timestamp": "2024-01-15T14:05:00",
+    "sender": "Me",
+    "group": "Wayne Desi Gals",
+    "text": "does anyone know a good dentist in Jumeirah?",
+    "media_type": "text",
+    "quoted_message_id": null,
+    "local_media_path": null
+  }
+]

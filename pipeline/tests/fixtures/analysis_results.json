@@ -1,0 +1,184 @@
+[
+  {
+    "message_id": "msg_001",
+    "timestamp": "2024-01-15T10:00:00",
+    "sender": "Priya",
+    "message_type": "QUESTION",
+    "question_analysis": {
+      "is_service_valid": true,
+      "signals": {
+        "service_noun": true,
+        "request_verb": true,
+        "contact_language": true,
+        "location_anchor": true,
+        "price_or_availability": false
+      },
+      "confidence": "HIGH",
+      "needs_review": false
+    },
+    "answer_analysis": null
+  },
+
+  {
+    "message_id": "msg_002",
+    "timestamp": "2024-01-15T10:05:00",
+    "sender": "Sunita",
+    "message_type": "QUESTION",
+    "question_analysis": {
+      "is_service_valid": false,
+      "signals": {
+        "service_noun": true,
+        "request_verb": true,
+        "contact_language": false,
+        "location_anchor": false,
+        "price_or_availability": false
+      },
+      "confidence": "LOW",
+      "needs_review": true
+    },
+    "answer_analysis": null
+  },
+
+  {
+    "message_id": "msg_003",
+    "timestamp": "2024-01-15T10:10:00",
+    "sender": "Reema",
+    "message_type": "ANSWER",
+    "question_analysis": null,
+    "answer_analysis": {
+      "is_actionable": true,
+      "confidence": "HIGH",
+      "parent_question_id": "msg_001",
+      "link_method": "temporal",
+      "contact": {
+        "phone": "+971501234567",
+        "name": "Ahmed Plumbing",
+        "business": "Ahmed Plumbing",
+        "source_type": "text"
+      },
+      "needs_review": false
+    }
+  },
+
+  {
+    "message_id": "msg_004",
+    "timestamp": "2024-01-15T10:15:00",
+    "sender": "Farah",
+    "message_type": "ANSWER",
+    "question_analysis": null,
+    "answer_analysis": {
+      "is_actionable": true,
+      "confidence": "MEDIUM",
+      "parent_question_id": "msg_001",
+      "link_method": "temporal",
+      "contact": {
+        "phone": "+971559876543",
+        "name": null,
+        "business": null,
+        "source_type": "text"
+      },
+      "needs_review": false
+    }
+  },
+
+  {
+    "message_id": "msg_005",
+    "timestamp": "2024-01-15T10:20:00",
+    "sender": "Meena",
+    "message_type": "CHAT",
+    "question_analysis": null,
+    "answer_analysis": null
+  },
+
+  {
+    "message_id": "msg_006",
+    "timestamp": "2024-01-15T10:25:00",
+    "sender": "Admin",
+    "message_type": "ANNOUNCEMENT",
+    "question_analysis": null,
+    "answer_analysis": null
+  },
+
+  {
+    "message_id": "msg_007",
+    "timestamp": "2024-01-15T10:30:00",
+    "sender": "Deepa",
+    "message_type": "ANSWER",
+    "question_analysis": null,
+    "answer_analysis": {
+      "is_actionable": true,
+      "confidence": "LOW",
+      "parent_question_id": "msg_001",
+      "link_method": "temporal",
+      "contact": {
+        "phone": null,
+        "name": null,
+        "business": null,
+        "source_type": "vcard"
+      },
+      "needs_review": true
+    }
+  },
+
+  {
+    "message_id": "msg_008",
+    "timestamp": "2024-01-15T10:35:00",
+    "sender": "Layla",
+    "message_type": "ANSWER",
+    "question_analysis": null,
+    "answer_analysis": {
+      "is_actionable": true,
+      "confidence": "LOW",
+      "parent_question_id": "msg_001",
+      "link_method": "temporal",
+      "contact": {
+        "phone": null,
+        "name": null,
+        "business": null,
+        "source_type": "image"
+      },
+      "needs_review": true
+    }
+  },
+
+  {
+    "message_id": "msg_009",
+    "timestamp": "2024-01-15T14:00:00",
+    "sender": "Noor",
+    "message_type": "ANSWER",
+    "question_analysis": null,
+    "answer_analysis": {
+      "is_actionable": true,
+      "confidence": "MEDIUM",
+      "parent_question_id": null,
+      "link_method": null,
+      "contact": {
+        "phone": "+97141234567",
+        "name": null,
+        "business": null,
+        "source_type": "text"
+      },
+      "needs_review": true
+    }
+  },
+
+  {
+    "message_id": "msg_010",
+    "timestamp": "2024-01-15T14:05:00",
+    "sender": "Me",
+    "message_type": "QUESTION",
+    "question_analysis": {
+      "is_service_valid": true,
+      "signals": {
+        "service_noun": true,
+        "request_verb": true,
+        "contact_language": false,
+        "location_anchor": true,
+        "price_or_availability": false
+      },
+      "confidence": "HIGH",
+      "needs_review": false
+    },
+    "answer_analysis": null
+  }
+]

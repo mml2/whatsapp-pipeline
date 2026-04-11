@@ -1,0 +1,24 @@
+database:
+  path: "../mcp/whatsapp-bridge/store/messages.db"
+
+group:
+  jid: "XXXXXXXXXXXXXXXXX@g.us"   # WhatsApp group JID — find it in the bridge logs
+  name: "Your Group Name"          # Must match exactly as stored in the DB
+
+pipeline:
+  polling_interval_seconds: 10
+
+output:
+  directory: "./output"
+  questions_file: "questions.csv"
+  answers_file: "answers.csv"
+
+logging:
+  level: "INFO"
+  file: "./logs/pipeline.log"
+
+anthropic:
+  provider: "openai"               # "anthropic" or "openai"
+  api_key_env: "OPENAI_API_KEY"    # name of the environment variable holding your key
+  model: "gpt-4o"                  # vision-capable model required for image extraction
+                                   # openai: gpt-4o  anthropic: claude-sonnet-4-6

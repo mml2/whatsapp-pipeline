@@ -1,0 +1,98 @@
+WhatsApp Contact Extraction Pipeline — Execution Sequence
+==========================================================
+
+Rule: Never build a module before the modules it imports from are tested and green.
+
+----------------------------------------------------------
+PHASE 1 — Foundation (no external dependencies)
+----------------------------------------------------------
+
+Step 1: pipeline/models.py
+  Verify: Pydantic models parse correctly; schema matches SYSTEM_PROMPT exactly
+
+Step 2: pipeline/logger.py
+  Verify: Log lines emit in [STAGE][STATUS] k=v format
+
+Step 3: config.yaml
+  Verify: Config loads and all required keys are present
+
+----------------------------------------------------------
+PHASE 2 — Test Infrastructure
+----------------------------------------------------------
+
+Step 4: tests/conftest.py
+        tests/fixtures/messages.sql
+        tests/fixtures/messages.json
+  Verify: In-memory SQLite seeds correctly; fixture messages cover all types
+          (QUESTION, ANSWER, CHAT, vcard, quoted, multi-group)
+
+----------------------------------------------------------
+PHASE 3 — Data Ingestion (first E2E checkpoint)
+----------------------------------------------------------
+
+Step 5: pipeline/fetcher.py
+        tests/test_fetcher.py
+  Verify: Startup check aborts on wrong group name; SQL filter returns only
+          Wayne Desi Gals messages; field remapping correct; quoted_message_id
+          populated; watermark advances
+  E2E:    Pull real messages from live SQLite DB and inspect output
+
+----------------------------------------------------------
+PHASE 4 — Support Modules (independent of each other)
+----------------------------------------------------------
+
+Step 6: pipeline/context_window.py
+        tests/test_context_window.py
+  Verify: 120-min cutoff correct; messages from other groups never appear
+          in context; window expires correctly
+
+Step 7: pipeline/media_handler.py
+        tests/test_media_handler.py
+  Verify: Go bridge HTTP call formed correctly; source_type set to vcard/image;
+          failure returns gracefully
+
+----------------------------------------------------------
+PHASE 5 — AI Analysis (second E2E checkpoint)
+----------------------------------------------------------
+
+Step 8: tests/fixtures/analysis_results.json
+  Verify: Ground-truth outputs defined before writing the code that must produce them
+
+Step 9: pipeline/analyzer.py
+        tests/test_analyzer.py
+  Verify: System prompt loads correctly; API payload is well-formed; Claude JSON
+          response validates against AnalysisResult; Pydantic rejects malformed output
+  E2E:    fetch → build context → run through analyzer with mock Claude → confirm JSON shape
+
+----------------------------------------------------------
+PHASE 6 — Output
+----------------------------------------------------------
+
+Step 10: pipeline/storage.py
+         tests/test_storage.py
+  Verify: QUESTION rows land in questions.csv with correct columns; ANSWER rows
+          land in answers.csv; CHAT/ANNOUNCEMENT produce no write;
+          headers written on first run only
+
+----------------------------------------------------------
+PHASE 7 — Integration (full E2E)
+----------------------------------------------------------
+
+Step 11: main.py
+  Verify: Full pipeline runs end-to-end with mock Claude; run with live Claude
+          against a small batch of real messages; check both CSVs
+
+----------------------------------------------------------
+DEPENDENCY GRAPH
+----------------------------------------------------------
+
+models.py
+  └── logger.py
+        └── config.yaml
+              └── conftest.py + fixtures
+                    └── fetcher.py                 <-- first E2E checkpoint
+                          └── context_window.py
+                          └── media_handler.py
+                                └── analyzer.py   <-- second E2E checkpoint
+                                      └── storage.py
+                                            └── main.py  <-- full E2E

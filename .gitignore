@@ -1,0 +1,47 @@
+# ── WhatsApp session & database ──────────────────────────────────────────────
+# Contains your WhatsApp auth keys and all message history with real names,
+# phone numbers, and message content. NEVER commit.
+mcp/whatsapp-bridge/store/
+*.db
+*.db-shm
+*.db-wal
+
+# ── Pipeline output ───────────────────────────────────────────────────────────
+# Contains real phone numbers, names, and message text extracted from the group.
+pipeline/output/
+pipeline/logs/
+pipeline/watermark.txt
+
+# ── Config (contains group JID and group name) ────────────────────────────────
+pipeline/config.yaml
+
+# ── Real message dumps used for local testing ─────────────────────────────────
+# These are exports of real WhatsApp data and must stay local only.
+pipeline/tests/fixtures/messages_dump.sql
+
+# ── Python build artifacts ────────────────────────────────────────────────────
+pipeline/.venv/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+
+# ── Go build artifacts ────────────────────────────────────────────────────────
+mcp/whatsapp-bridge/whatsapp-bridge
+whatsapp-go-bridge/whatsapp-bridge
+**/*.exe
+
+# ── Claude Code local settings ───────────────────────────────────────────────
+.claude/
+**/.claude/
+
+# ── OS / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+.env
+*.swp
+*.swo
+mcp/
