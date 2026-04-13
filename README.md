@@ -1,6 +1,6 @@
 # WhatsApp Contact Extraction Pipeline
 
-A pipeline that monitors a WhatsApp group, classifies messages using Claude/GPT-4o, and extracts service contact information into structured CSV files.
+A pipeline that monitors a WhatsApp group, classifies messages using Claude/GPT-4o, and extracts service contact information into structured CSV files. This is a PoC project ONLY.
 
 ## What it does
 
