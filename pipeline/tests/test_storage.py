@@ -179,6 +179,20 @@ class TestAnswerRow:
         row = read_csv(str(tmp_path / "answers.csv"))[0]
         assert row["question_id"] == ""   # None written as empty string by csv.DictWriter
 
+    def test_name_written(self, storage, fixtures, tmp_path):
+        messages, results = fixtures
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        row = read_csv(str(tmp_path / "answers.csv"))[0]
+        assert row["name"] == "Ahmed Plumbing"
+
+    def test_business_written(self, storage, fixtures, tmp_path):
+        messages, results = fixtures
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        row = read_csv(str(tmp_path / "answers.csv"))[0]
+        assert row["business"] == "Ahmed Plumbing"
+
     def test_answer_confidence_written(self, storage, fixtures, tmp_path):
         messages, results = fixtures
         storage.store(results["msg_001"], messages["msg_001"])

@@ -74,7 +74,6 @@ class Storage:
         phone      = contact.phone      if hasattr(contact, "phone")      else contact.get("phone")
         name       = contact.name       if hasattr(contact, "name")       else contact.get("name")
         business   = contact.business   if hasattr(contact, "business")   else contact.get("business")
-        source     = contact.source_type if hasattr(contact, "source_type") else contact.get("source_type")
 
         row = {
             "timestamp":     result.timestamp,
