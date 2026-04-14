@@ -146,12 +146,6 @@ class TestQuestionRow:
 # ---------------------------------------------------------------------------
 
 class TestAnswerRow:
-    def test_answer_id_is_message_id(self, storage, fixtures, tmp_path):
-        messages, results = fixtures
-        storage.store(results["msg_003"], messages["msg_003"])
-        row = read_csv(str(tmp_path / "answers.csv"))[0]
-        assert row["answer_id"] == "msg_003"
-
     def test_question_id_linked_correctly(self, storage, fixtures, tmp_path):
         messages, results = fixtures
         storage.store(results["msg_001"], messages["msg_001"])
@@ -159,18 +153,18 @@ class TestAnswerRow:
         row = read_csv(str(tmp_path / "answers.csv"))[0]
         assert row["question_id"] == "msg_001"
 
-    def test_question_populated_from_parent(self, storage, fixtures, tmp_path):
+    def test_question_text_populated_from_parent(self, storage, fixtures, tmp_path):
         messages, results = fixtures
         storage.store(results["msg_001"], messages["msg_001"])
         storage.store(results["msg_003"], messages["msg_003"])
         row = read_csv(str(tmp_path / "answers.csv"))[0]
-        assert row["question"] == messages["msg_001"].text
+        assert row["question_text"] == messages["msg_001"].text
 
-    def test_answer_text_from_original_message(self, storage, fixtures, tmp_path):
+    def test_message_text_from_original_message(self, storage, fixtures, tmp_path):
         messages, results = fixtures
         storage.store(results["msg_003"], messages["msg_003"])
         row = read_csv(str(tmp_path / "answers.csv"))[0]
-        assert row["answer"] == messages["msg_003"].text
+        assert row["message"] == messages["msg_003"].text
 
     def test_phone_number_written(self, storage, fixtures, tmp_path):
         messages, results = fixtures
@@ -184,12 +178,6 @@ class TestAnswerRow:
         storage.store(results["msg_009"], messages["msg_009"])
         row = read_csv(str(tmp_path / "answers.csv"))[0]
         assert row["question_id"] == ""   # None written as empty string by csv.DictWriter
-
-    def test_orphan_answer_needs_review_true(self, storage, fixtures, tmp_path):
-        messages, results = fixtures
-        storage.store(results["msg_009"], messages["msg_009"])
-        row = read_csv(str(tmp_path / "answers.csv"))[0]
-        assert row["needs_review"] == "True"
 
     def test_answer_confidence_written(self, storage, fixtures, tmp_path):
         messages, results = fixtures

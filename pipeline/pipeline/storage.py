@@ -11,8 +11,8 @@ QUESTION_HEADERS = [
 ]
 
 ANSWER_HEADERS = [
-    "timestamp", "question", "answer", "phone", "name", "business",
-    "confidence", "needs_review", "sender", "question_id", "answer_id",
+    "timestamp", "question_text", "message", "phone", "name", "business",
+    "confidence", "question_id",
 ]
 
 
@@ -77,17 +77,14 @@ class Storage:
         source     = contact.source_type if hasattr(contact, "source_type") else contact.get("source_type")
 
         row = {
-            "answer_id":   result.message_id,
-            "question_id": aa.parent_question_id,
-            "question":    self._question_texts.get(aa.parent_question_id or "", ""),
-            "confidence":  aa.confidence.value if aa.confidence else None,
-            "timestamp":   result.timestamp,
-            "sender":      result.sender,
-            "answer":      msg.text,
-            "phone":       phone,
-            "name":        name,
-            "business":    business,
-            "needs_review": aa.needs_review,
+            "timestamp":     result.timestamp,
+            "question_text": self._question_texts.get(aa.parent_question_id or "", ""),
+            "message":       msg.text,
+            "phone":         phone,
+            "name":          name,
+            "business":      business,
+            "confidence":    aa.confidence.value if aa.confidence else None,
+            "question_id":   aa.parent_question_id,
         }
         self._append(self._answers_path, ANSWER_HEADERS, row)
         log(
