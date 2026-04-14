@@ -229,3 +229,67 @@ class TestAppend:
         a_rows = read_csv(str(tmp_path / "answers.csv"))
         assert len(q_rows) == 1
         assert len(a_rows) == 1
+
+
+# ---------------------------------------------------------------------------
+# PII absence — group member identifiers must not appear in answers.csv
+# ---------------------------------------------------------------------------
+
+class TestPIIAbsence:
+    """Assert that WhatsApp group-member identifiers never appear in answers.csv."""
+
+    # All sender names present in the synthetic fixture data
+    SENDER_NAMES = {"Priya", "Sunita", "Reema", "Farah", "Meena", "Admin",
+                    "Deepa", "Layla", "Noor", "Me"}
+
+    def test_sender_not_in_answers_csv_headers(self, storage, fixtures, tmp_path):
+        """'sender' must not be a column in answers.csv."""
+        messages, results = fixtures
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        rows = read_csv(str(tmp_path / "answers.csv"))
+        assert "sender" not in rows[0].keys()
+
+    def test_answers_csv_has_exactly_expected_columns(self, storage, fixtures, tmp_path):
+        """answers.csv must contain exactly ANSWER_HEADERS — no extra fields."""
+        messages, results = fixtures
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        rows = read_csv(str(tmp_path / "answers.csv"))
+        assert list(rows[0].keys()) == ANSWER_HEADERS
+
+    def test_phone_in_answers_is_service_provider_not_sender(self, storage, fixtures, tmp_path):
+        """The 'phone' field must equal the LLM-extracted contact, not the sender's name."""
+        messages, results = fixtures
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        row = read_csv(str(tmp_path / "answers.csv"))[0]
+        # Phone should be the service-provider number, not a sender name
+        assert row["phone"] not in self.SENDER_NAMES
+        assert row["phone"] == "+971501234567"
+
+    def test_sender_names_not_in_contact_fields(self, storage, fixtures, tmp_path):
+        """None of the contact fields (phone, name, business) should equal a group-member sender."""
+        messages, results = fixtures
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        row = read_csv(str(tmp_path / "answers.csv"))[0]
+        for field in ("phone", "name", "business"):
+            assert row[field] not in self.SENDER_NAMES, (
+                f"answers.csv field '{field}' contains a group-member sender name: {row[field]!r}"
+            )
+
+    def test_questions_csv_sender_not_propagated_to_answers_csv(self, storage, fixtures, tmp_path):
+        """Storing a question (which records sender='Priya') must not leak that name into answers.csv."""
+        messages, results = fixtures
+        # msg_001 sender is "Priya" — storing it writes a questions.csv row that includes sender
+        storage.store(results["msg_001"], messages["msg_001"])
+        # msg_003 is the answer — its row in answers.csv must not contain "Priya"
+        storage.store(results["msg_003"], messages["msg_003"])
+        rows = read_csv(str(tmp_path / "answers.csv"))
+        assert rows, "answers.csv should have at least one row"
+        for row in rows:
+            for field, value in row.items():
+                assert "Priya" not in value, (
+                    f"answers.csv field '{field}' contains the sender name 'Priya': {value!r}"
+                )
