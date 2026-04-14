@@ -202,6 +202,64 @@ class TestAnswerRow:
 
 
 # ---------------------------------------------------------------------------
+# PII absence — answers.csv must not expose WhatsApp group member identifiers
+# ---------------------------------------------------------------------------
+
+class TestPIIAbsence:
+    def test_sender_not_in_answers_csv_headers(self, storage, fixtures, tmp_path):
+        """The group member who sent the answer must never appear as a CSV column."""
+        messages, results = fixtures
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        rows = read_csv(str(tmp_path / "answers.csv"))
+        assert "sender" not in rows[0].keys()
+
+    def test_answers_csv_has_exactly_expected_columns(self, storage, fixtures, tmp_path):
+        """answers.csv must have exactly ANSWER_HEADERS — no extra PII columns can sneak in."""
+        messages, results = fixtures
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        rows = read_csv(str(tmp_path / "answers.csv"))
+        assert list(rows[0].keys()) == ANSWER_HEADERS
+
+    def test_phone_in_answers_is_service_provider_not_sender(self, storage, fixtures, tmp_path):
+        """The phone field must be the LLM-extracted contact phone, not the sender's WhatsApp JID."""
+        messages, results = fixtures
+        # msg_003 sender is "Reema"; the extracted contact phone is "+971501234567"
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        row = read_csv(str(tmp_path / "answers.csv"))[0]
+        # contact phone must be extracted value, not the sender name
+        assert row["phone"] != messages["msg_003"].sender
+        assert row["phone"] == "+971501234567"
+
+    def test_sender_names_not_in_contact_fields(self, storage, fixtures, tmp_path):
+        """None of the contact fields should equal the WhatsApp group sender names."""
+        messages, results = fixtures
+        senders = {messages[mid].sender for mid in ["msg_003", "msg_004", "msg_009"]}
+        for mid in ["msg_003", "msg_004", "msg_009"]:
+            storage.store(results[mid], messages[mid])
+        rows = read_csv(str(tmp_path / "answers.csv"))
+        for row in rows:
+            assert row["phone"] not in senders
+            assert row["name"] not in senders
+
+    def test_questions_csv_sender_not_propagated_to_answers_csv(self, storage, fixtures, tmp_path):
+        """Storing a question (which records sender) must not leak sender into answers.csv."""
+        messages, results = fixtures
+        # store question from "Priya", then the answer from "Reema"
+        storage.store(results["msg_001"], messages["msg_001"])
+        storage.store(results["msg_003"], messages["msg_003"])
+        answer_rows = read_csv(str(tmp_path / "answers.csv"))
+        question_rows = read_csv(str(tmp_path / "questions.csv"))
+        question_sender = question_rows[0]["sender"]   # "Priya"
+        # that sender name must not appear in any answers.csv field value
+        for row in answer_rows:
+            for value in row.values():
+                assert question_sender not in (value or "")
+
+
+# ---------------------------------------------------------------------------
 # Append behaviour
 # ---------------------------------------------------------------------------
 
